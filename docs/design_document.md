@@ -313,21 +313,3 @@ GENERATE_CONDONATION_REPORT ALL reports/all_sections_condonation.csv
 EXIT
 ```
 
----
-
-## 12. Viva & Technical Defense Notes
-
-### Q1: Why is medical condonation deducted from conducted periods rather than added to attended periods?
-> **Answer**: Adding medical absence as "attended" falsely certifies that the student received instruction in that subject. Deducting approved medical periods from both conducted and attended counts recognizes the medical justification while adjusting the curriculum baseline to reflect actual instruction received, subject to the statutory 15% cap.
-
-### Q2: Why are duty caps evaluated after medical removal?
-> **Answer**: The business rules mandate that the 10% duty cap must be evaluated on the **post-medical conducted periods** (`post_medical_conducted`). If duty caps were evaluated on raw conducted periods, students would receive excess duty credit on periods that were already waived under medical leave.
-
-### Q3: How do you prevent floating-point representation bugs at 75.00% vs 74.99%?
-> **Answer**: Floating-point values like `74.99` in binary IEEE-754 can be stored as `74.99000000000001` or `74.98999999999999`. We use Python's `Decimal` module with explicit `ROUND_DOWN` quantizing to 2 decimal places, and conduct integer arithmetic for caps via `_floor_pct = int((conducted * pct) // 100)`.
-
-### Q4: How does the system handle an unbroken absence streak interrupted by a public holiday?
-> **Answer**: Institutional rules penalize continuous unexcused absenteeism from scheduled instruction. If an institutional holiday intervenes, instruction was not scheduled on that date; hence the contiguous streak of missed working days is interrupted.
-
-### Q5: How is performance maintained with 140,000+ attendance records?
-> **Answer**: We avoid all linear scans over the 140,000 records. At startup, `AttendanceManager` indexes records into hash buckets keyed by `(student_id, course_id)` and `(student_id, record_date)`. Calculating attendance for any student takes $O(K)$ time where $K$ is only their specific records (~460 records), completing the entire cohort in under 5 seconds.
