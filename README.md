@@ -432,3 +432,8 @@ python -m pytest tests/ -v
 ```text
 ======================= 117 passed, 1 warning in 0.98s =======================
 ```
+## 🎥 Project Demo
+
+Watch our 5-minute demonstration of the **PS-068 Student Attendance and Condonation / Eligibility Engine**.
+
+[▶ Watch the Project Demo Video](https://drive.google.com/file/d/1QaeMm4f0KsR4t9yH3P0s3W7y87_Kf75w/view?usp=sharing)
